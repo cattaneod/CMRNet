@@ -119,7 +119,14 @@ class DatasetVisibilityKittiSingle(Dataset):
             #io.imshow(np.array(rgb))
             #io.show()
 
-        rgb = to_tensor(rgb)
+        rgb = to_tensor(rgb)directories = ['/home/cattaneod/Datasets/KITTI/sequences/00',
+               '/home/cattaneod/Datasets/KITTI/sequences/03',
+               '/home/cattaneod/Datasets/KITTI/sequences/05',
+               '/home/cattaneod/Datasets/KITTI/sequences/06',
+               '/home/cattaneod/Datasets/KITTI/sequences/07',
+               '/home/cattaneod/Datasets/KITTI/sequences/08',
+               '/home/cattaneod/Datasets/KITTI/sequences/09',
+               ]
         rgb = normalization(rgb)
         return rgb
 
@@ -201,12 +208,15 @@ class DatasetVisibilityKittiSingle(Dataset):
 
         #io.imshow(depth_img.numpy(), cmap='jet')
         #io.show()
+        calib = get_calib_kitti(int(run))
+        if h_mirror:
+            calib[2] = (img.shape[2] / 2)*2 - calib[2]
 
         if not self.use_reflectance:
-            sample = {'rgb': img, 'point_cloud': pc_in, 'calib': get_calib_kitti(int(run)),
+            sample = {'rgb': img, 'point_cloud': pc_in, 'calib': calib,
                       'tr_error': T, 'rot_error': R, 'idx': int(run), 'rgb_name': timestamp}
         else:
-            sample = {'rgb': img, 'point_cloud': pc_in, 'reflectance': reflectance, 'calib': get_calib_kitti(int(run)),
+            sample = {'rgb': img, 'point_cloud': pc_in, 'reflectance': reflectance, 'calib': calib,
                       'tr_error': T, 'rot_error': R, 'idx': int(run), 'rgb_name': timestamp}
 
         return sample
