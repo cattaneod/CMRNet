@@ -119,14 +119,7 @@ class DatasetVisibilityKittiSingle(Dataset):
             #io.imshow(np.array(rgb))
             #io.show()
 
-        rgb = to_tensor(rgb)directories = ['/home/cattaneod/Datasets/KITTI/sequences/00',
-               '/home/cattaneod/Datasets/KITTI/sequences/03',
-               '/home/cattaneod/Datasets/KITTI/sequences/05',
-               '/home/cattaneod/Datasets/KITTI/sequences/06',
-               '/home/cattaneod/Datasets/KITTI/sequences/07',
-               '/home/cattaneod/Datasets/KITTI/sequences/08',
-               '/home/cattaneod/Datasets/KITTI/sequences/09',
-               ]
+        rgb = to_tensor(rgb)
         rgb = normalization(rgb)
         return rgb
 
