@@ -21,7 +21,7 @@ Tested on:
 Dependencies (this list is not complete):
 * [apex](https://nvidia.github.io/apex/)
 * [sacred](https://sacred.readthedocs.io/)
-* mathutils
+* mathutils (use this version: https://gitlab.com/m1lhaus/blender-mathutils)
 * openCV (for visualization)
 * open3d 0.7 (only for maps preprocessing)
 
