@@ -35,16 +35,15 @@ args = parser.parse_args()
 sequence = args.sequence
 print("Sequnce: ", sequence)
 velodyne_folder = os.path.join('./KITTI/ODOMETRY/sequences', sequence, 'velodyne')
-pose_file = os.path.join('./improved-gt', f'kitti-{sequence}.gm2dl')
+pose_file = os.path.join('./improved-gt', f'kitti-{sequence}.csv')
 
 poses = []
 with open(pose_file, 'r') as f:
     for x in f:
-        if x.startswith('VERTEX_SE3'):
-            x = x.split(' ')
-            T = torch.tensor([float(x[2]), float(x[3]), float(x[4])])
-            R = torch.tensor([float(x[8]), float(x[5]), float(x[6]), float(x[7])])
-            poses.append(to_rotation_matrix(R, T))
+        x = x.split(',')
+        T = torch.tensor([float(x[1]), float(x[2]), float(x[3])])
+        R = torch.tensor([float(x[7]), float(x[4]), float(x[5]), float(x[6])])
+        poses.append(to_rotation_matrix(R, T))
 
 map_file = args.map
 first_frame = int(args.start)
