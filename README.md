@@ -6,11 +6,31 @@
 This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-sa].
 [![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
 
+### News
+
+##### Check out our new paper "CMRNet++: Map and Camera Agnostic Monocular Visual Localization in LiDAR Maps":
+* [PDF](https://arxiv.org/abs/2004.13795)
+* [Demo](http://rl.uni-freiburg.de/research/vloc-in-lidar)
+* [Video](https://www.youtube.com/watch?v=EUCloC6flr4)
+
+[<img src="video-preview.png" width="512">](https://www.youtube.com/watch?v=EUCloC6flr4) 
+
+---
+
+> #### 2020/05/11
+> * We released the SLAM ground truth files, see [Local Maps Generation](#local-maps-generation).
+> * Multi-GPU training.
+> * Added requirements.txt
+
+
 ### Code
+
+![CMRNet Teaser](./teaser.png)
+
 PyTorch implementation of CMRNet.
 
 This code is a WIP (Work In Progress), use at your own risk.
-This version only works on a single GPU (no CPU nor multi-GPU version available yet).
+This version only works on GPUs (no CPU version available).
 
 Tested on:
 * Ubuntu 16.04
@@ -19,30 +39,32 @@ Tested on:
 * pytorch 1.0.1.post2
 
 Dependencies (this list is not complete):
-* [apex](https://nvidia.github.io/apex/)
 * [sacred](https://sacred.readthedocs.io/)
 * mathutils (use this version: https://gitlab.com/m1lhaus/blender-mathutils)
 * openCV (for visualization)
 * open3d 0.7 (only for maps preprocessing)
+* [pykitti](https://github.com/utiasSTARS/pykitti) (only for maps preprocessing)
 
 ### Installation
-Both correlation_package and visibility_package must be installed
+Install the required packages:
 ```
-python setup.py install
+pip install -r requirements.txt
 ```
+
+It is recommended to use a dedicated conda environment
 ```
-cd models/CMRNet/correlation_package/
-python setup.py install
+conda create -n 'cmrnet' python=3.6
+conda activate cmrnet
+pip install -r requirements.txt
 ```
 
 ### Data
-##### The data used for training and validation will be released soon
 
-We trained and tested CMRNet on the [KITTI odometry](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) sequences 00, 03, 05, 06, 07, 08 and 09.
+We trained and tested CMRNet on the [KITTI odometry](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) sequences 00, 03, 05, 06, 07, 08, and 09.
 
 We used a LiDAR-based SLAM system to generate the ground truths.
 
-The Data Loader require a local point cloud for each camera frame, the point cloud must be expressed with respect to the camera_2 reference frame, BUT (very important) with a different axes representation: X-forward, Y-right, Z-down.
+The Data Loader requires a local point cloud for each camera frame, the point cloud must be expressed with respect to the camera_2 reference frame, BUT (very important) with a different axes representation: X-forward, Y-right, Z-down.
 
 For reading speed and file size we decided to save the point clouds as h5 files.
 
@@ -74,6 +96,24 @@ KITTI_ODOMETRY
     │   └── 000800.h5
     └── poses.csv
 
+```
+
+#### Local Maps Generation
+
+To generate the h5 files, use the script preprocess/kitti_maps.py with the ground truth files in data/.
+
+In the sequence 08, the SLAM failed to detect a loop closure, so the poses are not coherent around that closure.
+Therefore, we splitted the map at frame 3000, so to have two coherent maps for that sequence.
+
+```bash
+python preprocess/kitti_maps.py --sequence 00 --kitti_folder ./KITTI_ODOMETRY/
+python preprocess/kitti_maps.py --sequence 03 --kitti_folder ./KITTI_ODOMETRY/
+python preprocess/kitti_maps.py --sequence 05 --kitti_folder ./KITTI_ODOMETRY/
+python preprocess/kitti_maps.py --sequence 06 --kitti_folder ./KITTI_ODOMETRY/
+python preprocess/kitti_maps.py --sequence 07 --kitti_folder ./KITTI_ODOMETRY/
+python preprocess/kitti_maps.py --sequence 08 --kitti_folder ./KITTI_ODOMETRY/ --end 3000
+python preprocess/kitti_maps.py --sequence 08 --kitti_folder ./KITTI_ODOMETRY/ --start 3000
+python preprocess/kitti_maps.py --sequence 09 --kitti_folder ./KITTI_ODOMETRY/
 ```
 
 ### Single Iteration example
@@ -118,6 +158,18 @@ If you use CMRNet, please cite:
   pages={1283-1289},
   doi={10.1109/ITSC.2019.8917470},
   month={Oct}
+}
+```
+
+If you use the ground truths, please also cite:
+```
+@INPROCEEDINGS{Caselitz_2016, 
+  author={T. {Caselitz} and B. {Steder} and M. {Ruhnke} and W. {Burgard}}, 
+  booktitle={IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+  title={Monocular camera localization in 3D LiDAR maps}, 
+  year={2016},
+  pages={1926-1931},
+  doi={10.1109/IROS.2016.7759304}
 }
 ```
 

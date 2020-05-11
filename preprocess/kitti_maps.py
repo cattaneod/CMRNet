@@ -30,16 +30,19 @@ parser.add_argument('--voxel_size', default=0.1, type=float, help='Voxel Size')
 parser.add_argument('--start', default=0, help='Starting Frame')
 parser.add_argument('--end', default=100000, help='End Frame')
 parser.add_argument('--map', default=None, help='Use map file')
+parser.add_argument('--kitti_folder', default='./KITTI/ODOMETRY', help='Folder of the KITTI dataset')
 
 args = parser.parse_args()
 sequence = args.sequence
 print("Sequnce: ", sequence)
-velodyne_folder = os.path.join('./KITTI/ODOMETRY/sequences', sequence, 'velodyne')
-pose_file = os.path.join('./improved-gt', f'kitti-{sequence}.csv')
+velodyne_folder = os.path.join(args.kitti_folder, 'sequences', sequence, 'velodyne')
+pose_file = os.path.join('./data', f'kitti-{sequence}.csv')
 
 poses = []
 with open(pose_file, 'r') as f:
     for x in f:
+        if x.startswith('timestamp'):
+            continue
         x = x.split(',')
         T = torch.tensor([float(x[1]), float(x[2]), float(x[3])])
         R = torch.tensor([float(x[7]), float(x[4]), float(x[5]), float(x[6])])
@@ -48,7 +51,7 @@ with open(pose_file, 'r') as f:
 map_file = args.map
 first_frame = int(args.start)
 last_frame = min(len(poses), int(args.end))
-kitti = pykitti.odometry('./KITTI/ODOMETRY/', sequence)
+kitti = pykitti.odometry(args.kitti_folder, sequence)
 
 if map_file is None:
 
@@ -56,6 +59,11 @@ if map_file is None:
     pcl = o3.PointCloud()
     for i in tqdm(range(first_frame, last_frame)):
         pc = kitti.get_velo(i)
+        valid_indices = pc[:, 0] < -3.
+        valid_indices = valid_indices | (pc[:, 0] > 3.)
+        valid_indices = valid_indices | (pc[:, 1] < -3.)
+        valid_indices = valid_indices | (pc[:, 1] > 3.)
+        pc = pc[valid_indices].copy()
         intensity = pc[:, 3].copy()
         pc[:, 3] = 1.
         RT = poses[i].numpy()
@@ -89,9 +97,9 @@ vox_intensity = torch.tensor(downpcd.colors, dtype=torch.float)[:, 0:1].t()
 velo2cam2 = torch.from_numpy(kitti.calib.T_cam2_velo).float().to(args.device)
 
 # SAVE SINGLE PCs
-if not os.path.exists(os.path.join('./KITTI/ODOMETRY/sequences/', sequence,
+if not os.path.exists(os.path.join(args.kitti_folder, 'sequences', sequence,
                                    f'local_maps_{args.voxel_size}')):
-    os.mkdir(os.path.join('./KITTI/ODOMETRY/sequences/', sequence, f'local_maps_{args.voxel_size}'))
+    os.mkdir(os.path.join(args.kitti_folder, 'sequences', sequence, f'local_maps_{args.voxel_size}'))
 for i in tqdm(range(first_frame, last_frame)):
     pose = poses[i]
     pose = pose.to(args.device)
@@ -114,7 +122,7 @@ for i in tqdm(range(first_frame, last_frame)):
     #pcd.points = o3.Vector3dVector(local_map[:,:3].numpy())
     #o3.write_point_cloud(f'{i:06d}.pcd', pcd)
 
-    file = os.path.join('./KITTI/ODOMETRY/sequences/', sequence,
+    file = os.path.join(args.kitti_folder, 'sequences', sequence,
                         f'local_maps_{args.voxel_size}', f'{i:06d}.h5')
     with h5py.File(file, 'w') as hf:
         hf.create_dataset('PC', data=local_map.cpu().half(), compression='lzf', shuffle=True)

@@ -10,7 +10,7 @@ import os
 import random
 import time
 
-import apex
+# import apex
 import mathutils
 import numpy as np
 import torch
@@ -92,8 +92,10 @@ def train(model, optimizer, rgb_img, refl_img, target_transl, target_rot, loss_f
     else:
         total_loss = loss_fn(point_clouds, target_transl, target_rot, transl_err, rot_err)
 
-    with apex.amp.scale_loss(total_loss, optimizer) as scaled_loss:
-        scaled_loss.backward()
+    # with apex.amp.scale_loss(total_loss, optimizer) as scaled_loss:
+    #     scaled_loss.backward()
+
+    total_loss.backward()
     optimizer.step()
 
     return total_loss.item()
@@ -242,7 +244,7 @@ def main(_config, _run, seed):
         starting_epoch = checkpoint['epoch']
 
     # Allow mixed-precision if needed
-    model, optimizer = apex.amp.initialize(model, optimizer, opt_level=_config["precision"])
+    # model, optimizer = apex.amp.initialize(model, optimizer, opt_level=_config["precision"])
 
     start_full_time = time.time()
     BEST_VAL_LOSS = 10000.
