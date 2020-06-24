@@ -16,7 +16,9 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 [<img src="video-preview.png" width="512">](https://www.youtube.com/watch?v=EUCloC6flr4) 
 
 ---
-
+> #### 2020/05/11
+> * We released the pretrained weights
+> 
 > #### 2020/05/11
 > * We released the SLAM ground truth files, see [Local Maps Generation](#local-maps-generation).
 > * Multi-GPU training.
@@ -141,6 +143,19 @@ Evaluation
 ```bash
 python evaluate_iterative_single_CALIB.py with test_sequence=00 maps_folder=local_maps data_folder=./KITTI_ODOMETRY/ weight="['./checkpoints/iter1.tar','./checkpoints/iter2.tar','./checkpoints/iter3.tar']"
 ```
+
+### Pretrained Model
+The weights for the three iterations, trained on the sequences 03, 05, 06, 07, 08 and 09 are available here:
+[Iteration 1](https://drive.google.com/file/d/1cwUGSrlVrD_WzKpTPgsUQNcdaCoh0aeE)
+[Iteration 2](https://drive.google.com/file/d/1ffMFrspQoGaIY5YJsy0LMEzLqrd5XCnb)
+[Iteration 3](https://drive.google.com/file/d/1-SYluv-hVDA6gebvCJrXtKuxCYdHqebw)
+
+Results:
+|| <p>Median <br> Transl. error</p> | <p>Median <br> Rotation. error</p> |
+|---|---|---|
+| Iteration 1 | 0.46 cm | 1.60° |
+| Iteration 2 | 0.25 cm | 1.14° |
+| Iteration 3 | 0.20 cm | 0.97° |
 
 ### Paper
 "CMRNet: Camera to LiDAR-Map Registration"
