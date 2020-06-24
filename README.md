@@ -17,10 +17,10 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 
 ---
 > #### 2020/06/24
-> * We released the pretrained weights, see [Local Maps Generation](#local-maps-generation).
+> * We released the pretrained weights, see [Pretrained Model](#pretrained-model).
 > 
 > #### 2020/05/11
-> * We released the SLAM ground truth files, see [Pretrained Model](#pretrained-model).
+> * We released the SLAM ground truth files, see [Local Maps Generation](#local-maps-generation).
 > * Multi-GPU training.
 > * Added requirements.txt
 
