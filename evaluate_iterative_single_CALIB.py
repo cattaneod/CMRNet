@@ -416,7 +416,7 @@ def main(_config, seed):
         log_file.close()
     print("Iterative refinement: ")
     for i in range(len(weights) + 1):
-        errors_r[i] = torch.tensor(errors_r[i])
+        errors_r[i] = torch.tensor(errors_r[i]) * (180.0 / 3.141592)
         errors_t[i] = torch.tensor(errors_t[i]) * 100
         print(f"Iteration {i}: \tMean Translation Error: {errors_t[i].mean():.4f} cm "
               f"     Mean Rotation Error: {errors_r[i].mean():.4f} °")
