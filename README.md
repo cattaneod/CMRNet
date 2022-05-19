@@ -16,6 +16,9 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 [<img src="video-preview.png" width="512">](https://www.youtube.com/watch?v=EUCloC6flr4) 
 
 ---
+> #### 2022/05/19
+> * Updated for later version of PyTorch 1.4+, and CUDA 11.x
+>
 > #### 2020/06/24
 > * We released the pretrained weights, see [Pretrained Model](#pretrained-model).
 > 
@@ -35,10 +38,10 @@ This code is a WIP (Work In Progress), use at your own risk.
 This version only works on GPUs (no CPU version available).
 
 Tested on:
-* Ubuntu 16.04
+* Ubuntu 16.04/18.04
 * python 3.6
-* cuda 9.0
-* pytorch 1.0.1.post2
+* cuda 9/10
+* pytorch 1.0.1/1.10
 
 Dependencies (this list is not complete):
 * [sacred](https://sacred.readthedocs.io/)
@@ -48,17 +51,16 @@ Dependencies (this list is not complete):
 * [pykitti](https://github.com/utiasSTARS/pykitti) (only for maps preprocessing)
 
 ### Installation
+Install [CUDA](https://developer.nvidia.com/cuda-toolkit), [PyTorch](https://pytorch.org/), [CuPy](https://cupy.dev/). Make sure to use the correct cuda version for all the packages.
+
+:warning: For CUDA 11.x please uncomment line 17 in models/CMRNet/correlation_package/setup.py [setup.py#L17](https://github.com/cattaneod/CMRNet/blob/master/models/CMRNet/correlation_package/setup.py#L17)
+
 Install the required packages:
 ```
 pip install -r requirements.txt
 ```
 
 It is recommended to use a dedicated conda environment
-```
-conda create -n 'cmrnet' python=3.6
-conda activate cmrnet
-pip install -r requirements.txt
-```
 
 ### Data
 

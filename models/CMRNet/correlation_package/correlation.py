@@ -1,5 +1,5 @@
-import correlation_cuda
 import torch
+import correlation_cuda
 from torch.autograd import Function
 from torch.nn.modules.module import Module
 
