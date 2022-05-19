@@ -55,9 +55,17 @@ Install [CUDA](https://developer.nvidia.com/cuda-toolkit), [PyTorch](https://pyt
 
 :warning: For CUDA 11.x please uncomment line 17 in models/CMRNet/correlation_package/setup.py [setup.py#L17](https://github.com/cattaneod/CMRNet/blob/master/models/CMRNet/correlation_package/setup.py#L17)
 
-Install the required packages:
+Install the prerequisite packages:
 ```
 pip install -r requirements.txt
+```
+
+And finally, install the correlation_cuda and the visibility package:
+```
+cd models/CMRNet/correlation_package/
+python setup.py install
+cd ../../..
+python setyp.py install
 ```
 
 It is recommended to use a dedicated conda environment
