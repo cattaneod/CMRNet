@@ -34,7 +34,7 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 
 PyTorch implementation of CMRNet.
 
-This code is a WIP (Work In Progress), use at your own risk.
+This code is a provided "as is", without warranty of any kind.
 This version only works on GPUs (no CPU version available).
 
 Tested on:
