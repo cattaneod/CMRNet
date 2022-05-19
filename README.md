@@ -40,7 +40,7 @@ This version only works on GPUs (no CPU version available).
 Tested on:
 * Ubuntu 16.04/18.04
 * python 3.6
-* cuda 9/10
+* cuda 9/10/11.1
 * pytorch 1.0.1/1.10
 
 Dependencies (this list is not complete):
