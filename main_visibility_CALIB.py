@@ -19,7 +19,7 @@ import torch.nn.parallel
 import torch.optim as optim
 import torch.utils.data
 import visibility
-from sacred import Experiment
+from sacred import Experiment, SETTINGS
 from sacred.utils import apply_backspaces_and_linefeeds
 
 from camera_model import CameraModel
@@ -32,6 +32,8 @@ from utils import merge_inputs, overlay_imgs, rotate_back
 torch.backends.cudnn.enabled = True
 torch.backends.cudnn.benchmark = True
 
+SETTINGS.DISCOVER_DEPENDENCIES = "none"
+SETTINGS.DISCOVER_SOURCES = "none"
 ex = Experiment("CMRNet")
 ex.captured_out_filter = apply_backspaces_and_linefeeds
 
@@ -150,7 +152,7 @@ def main(_config, _run, seed):
                                 test_sequence=_config['test_sequence'])
     _config["savemodel"] = os.path.join(_config["savemodel"], _config['test_sequence'])
     if not os.path.exists(_config["savemodel"]):
-        os.mkdir(_config["savemodel"])
+        os.makedirs(_config["savemodel"])
 
     np.random.seed(seed)
     torch.random.manual_seed(seed)
@@ -310,7 +312,7 @@ def main(_config, _run, seed):
                 uv = uv.t().int()
                 depth_img = torch.zeros(real_shape[:2], device='cuda', dtype=torch.float)
                 depth_img += 1000.
-                depth_img = visibility.depth_image(uv, depth, depth_img, uv.shape[0], real_shape[1], real_shape[0])
+                depth_img = visibility.depth_image(uv.contiguous(), depth, depth_img, uv.shape[0], real_shape[1], real_shape[0])
                 depth_img[depth_img == 1000.] = 0.
 
                 depth_img_no_occlusion = torch.zeros_like(depth_img, device='cuda')

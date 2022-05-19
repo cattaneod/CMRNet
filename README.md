@@ -136,14 +136,14 @@ python evaluate_iterative_single_CALIB.py with test_sequence=00 maps_folder=loca
 
 Training
 ```bash
-python main_visibility_CALIB.py with batch_size=24 data_folder=./KITTI_ODOMETRY/ epochs=300 max_r=10 max_t=2   BASE_LEARNING_RATE=0.0001 savemodel=./checkpoints/ test_sequence=0
-python main_visibility_CALIB.py with batch_size=24 data_folder=./KITTI_ODOMETRY/ epochs=300 max_r=2  max_t=1   BASE_LEARNING_RATE=0.0001 savemodel=./checkpoints/ test_sequence=0
-python main_visibility_CALIB.py with batch_size=24 data_folder=./KITTI_ODOMETRY/ epochs=300 max_r=2  max_t=0.6 BASE_LEARNING_RATE=0.0001 savemodel=./checkpoints/ test_sequence=0
+python main_visibility_CALIB.py with batch_size=24 data_folder=./KITTI_ODOMETRY/sequences/ epochs=300 max_r=10 max_t=2   BASE_LEARNING_RATE=0.0001 savemodel=./checkpoints/ test_sequence=0
+python main_visibility_CALIB.py with batch_size=24 data_folder=./KITTI_ODOMETRY/sequences/ epochs=300 max_r=2  max_t=1   BASE_LEARNING_RATE=0.0001 savemodel=./checkpoints/ test_sequence=0
+python main_visibility_CALIB.py with batch_size=24 data_folder=./KITTI_ODOMETRY/sequences/ epochs=300 max_r=2  max_t=0.6 BASE_LEARNING_RATE=0.0001 savemodel=./checkpoints/ test_sequence=0
 ```
 
 Evaluation
 ```bash
-python evaluate_iterative_single_CALIB.py with test_sequence=00 maps_folder=local_maps data_folder=./KITTI_ODOMETRY/ weight="['./checkpoints/iter1.tar','./checkpoints/iter2.tar','./checkpoints/iter3.tar']"
+python evaluate_iterative_single_CALIB.py with test_sequence=00 maps_folder=local_maps data_folder=./KITTI_ODOMETRY/sequences/ weight="['./checkpoints/iter1.tar','./checkpoints/iter2.tar','./checkpoints/iter3.tar']"
 ```
 
 ### Pretrained Model
