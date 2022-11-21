@@ -163,9 +163,9 @@ The weights for the three iterations, trained on the sequences 03, 05, 06, 07, 0
 Results:
 || <p>Median <br> Transl. error</p> | <p>Median <br> Rotation. error</p> |
 |---|---|---|
-| Iteration 1 | 0.46 cm | 1.60° |
-| Iteration 2 | 0.25 cm | 1.14° |
-| Iteration 3 | 0.20 cm | 0.97° |
+| Iteration 1 | 0.46 m | 1.60° |
+| Iteration 2 | 0.25 m | 1.14° |
+| Iteration 3 | 0.20 m | 0.97° |
 
 ### Paper
 "CMRNet: Camera to LiDAR-Map Registration"
